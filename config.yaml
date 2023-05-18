@@ -16,8 +16,8 @@ params:
     address:
       - city: London, Singapore, Shenzhen
         country: UK, Singapore, China
-        street: -
-        title: -
+        #street: street
+        title: Where I'm based
     buttonClear: Clear
     buttonSend: Send message
     email:

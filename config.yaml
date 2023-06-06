@@ -21,12 +21,12 @@ params:
     buttonClear: Clear
     buttonSend: Send message
     email:
-      - email: example@domain.com
+      - email: qi.ren.13@gmail.com
         title: Email
     enable: yes
-    phone:
-      - phone: (000) 000-0000 x1234
-        title: Phone
+    #phone:
+    #  - phone: (000) 000-0000 x1234
+    #    title: Phone
   custom_css: []
   custom_js: []
   description: Your description

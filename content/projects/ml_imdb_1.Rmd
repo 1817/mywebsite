@@ -9,22 +9,7 @@ image: pic06.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, j
 
 keywords: ""
 slug: ml_imdb_1 # slug is the shorthand URL address... no spaces plz
-
-title: 'Machine Learning'
-author: "qi ren"
-date: "`r Sys.Date()`"
-output:
-  word_document:
-    toc: yes
-  pdf_document:
-    toc: yes
-  html_document:
-    theme: flatly
-    highlight: zenburn
-    number_sections: yes
-    toc: yes
-    toc_float: yes
-    code_folding: show
+title: Risk-Return of DJIA stocks
 ---
 
 ```{r}

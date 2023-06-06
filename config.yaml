@@ -76,8 +76,8 @@ params:
       #- name: Elements
       #  url: elements.html
     menu: Menu
-    subtitle: By HTML5 Up
-    title: Forty
+    #subtitle: By HTML5 Up
+    title: Home
   tiles:
     enable: yes
     showcase:

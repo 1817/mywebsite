@@ -69,7 +69,7 @@ params:
     links:
       - name: Home
         url: '#'
-      - name: Blogs
+      - name: Blog
         url: blogs
       - name: Projects
         url: projects

@@ -9,8 +9,13 @@ image: pic06.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, j
 
 keywords: ""
 slug: ml_imdb_1 # slug is the shorthand URL address... no spaces plz
-title: Risk-Return of DJIA stocks
+title: ML with IMDB Data
 ---
+
+```{r, setup, echo=FALSE}
+knitr::include_graphics("/img/pic06.jpg",error=FALSE)
+```
+
 
 ```{r}
 #| label: load-libraries

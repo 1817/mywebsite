@@ -83,8 +83,8 @@ params:
     showcase:
       - image: pic01.jpg
         subtitle: This is to showcase my first project
-        title: Project 1
-        url: blogs/project_1
+        title: ML with IMDB Data
+        url: blogs/ml_imdb_1
       - image: pic02.jpg
         subtitle: This is project 2
         title: Project 2

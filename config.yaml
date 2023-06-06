@@ -58,14 +58,14 @@ params:
       #  label: LinkedIn
       #  url: https://www.linkedin.com
   image: ''
-  name: Your name
+  name: Qi Ren
   navigation:
-    button1:
-      - name: Get Started
-        url: blogs
-    button2:
-      - name: Log In
-        url: '#'
+    #button1:
+     # - name: Get Started
+      #  url: projects
+    #button2:
+     # - name: Log In
+      #  url: '#'
     links:
       - name: Home
         url: '#'

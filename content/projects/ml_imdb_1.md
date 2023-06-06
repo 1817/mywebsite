@@ -929,7 +929,6 @@ log_res <- log_wflow %>%
 ```
 ## There were issues with some computations   A: x1
 There were issues with some computations   A: x2   B: x1
-## There were issues with some computations   A: x2   B: x2
 ## There were issues with some computations   A: x3   B: x2
 ## There were issues with some computations   A: x4   B: x3
 ## There were issues with some computations   A: x5   B: x4

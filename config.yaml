@@ -84,7 +84,7 @@ params:
       - image: pic01.jpg
         subtitle: This is to showcase my first project
         title: ML with IMDB Data
-        url: blogs/ml_imdb_1
+        url: projects/ml_imdb_1
       - image: pic02.jpg
         subtitle: This is project 2
         title: Project 2

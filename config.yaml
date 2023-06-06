@@ -106,13 +106,9 @@ params:
         title: Project 6
         url: blogs/project_6
   two:
-    buttonText: Get Started
+    buttonText: Time to Rock n Roll
     enable: yes
-    subtitle: "some words here
-      \n    Mauris aliquet magna magna sed nunc rhoncus pharetra. \n    Pellentesque
-      condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia
-      pellentesque lorem ipsum dolor. \n    Nullam et orci eu lorem consequat tincidunt.
-      Vivamus et sagittis libero.\n    Mauris aliquet magna magna sed nunc rhoncus
-      amet pharetra et feugiat tempus."
-    title: A Title
+    subtitle: "I am currently an MBA student at London Business School
+      \n    I am interested in how data is changing the way we perceive the political and business world \n    Sometimes I write about geopolitics, sometimes I code. \n    This site is created as part of my course work with Kostis Christodoulou.\n    Get in touch with through the social media links at the bottom!"
+    title: About myself
     url: blogs

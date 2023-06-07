@@ -9,7 +9,7 @@ draft: false
 image: pic11.jpg
 keywords: ""
 slug: how_data_science_revo_globa_biz
-title: "How Data Science Revolutionized Global Business: The Journey Since 2008"
+title: "How Data Science Revolutionized Global Business"
 ---
 
 

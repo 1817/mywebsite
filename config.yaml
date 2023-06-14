@@ -44,7 +44,7 @@ params:
     social:
       - icon: fa-twitter
         label: Twitter
-        url: https://www.twitter.com
+        url: https://twitter.com/rqchina1
       #- icon: fa-facebook
       #  label: Facebook
       #  url: https://www.facebook.com

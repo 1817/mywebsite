@@ -14,19 +14,19 @@ params:
   blog: {}
   contact:
     address:
-      - city: London, Singapore, Shenzhen
-        country: UK, Singapore, China
+      - city: London | Singapore | Shenzhen
+        country: UK | Singapore | China
         #street: street
         title: Where I'm based
     buttonClear: Clear
     buttonSend: Send message
     email:
-      - email: qi.ren.13@gmail.com
+      - email: qren125@outlook.com
         title: Email
     enable: yes
-    #phone:
-    #  - phone: (000) 000-0000 x1234
-    #    title: Phone
+    phone:
+      - phone: +971 (0)4 401 9301
+        title: Phone
   custom_css: []
   custom_js: []
   description: Your description

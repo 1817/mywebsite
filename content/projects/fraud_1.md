@@ -11,26 +11,10 @@ keywords: ""
 slug: fraud_1 # slug is the shorthand URL address... no spaces plz
 title: ML with Credit Card Fraud Data
 ---
-```{r, setup, echo=FALSE}
-knitr::include_graphics("/img/fraud.png",error=FALSE)
-```
+![](../../../../../../../../../../../img/fraud.png)<!-- -->
 
 
-```{r}
-#| label: load-libraries
-#| echo: false # This option disables the printing of code (only output is displayed).
-#| message: false
-#| warning: false
 
-library(tidyverse)
-library(tidymodels)
-library(skimr)
-library(kknn)
-library(here)
-library(tictoc)
-library(vip)
-library(ranger)
-```
 
 # The problem: predicting credit card fraud
 
@@ -51,22 +35,24 @@ As we will be building a classifier model using tidymodels, there's two things w
 1. Define the outcome variable `is_fraud` as a factor, or categorical, variable, instead of the numerical 0-1 varaibles.
 2. In tidymodels, the first level is the event of interest. If we leave our data as is, `0` is the first level, but we want to find out when we actually did (`1`) have a fraudulent transaction
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
 
-card_fraud <- read_csv(here::here("data", "card_fraud.csv")) %>% 
-
-  mutate(
-    # in tidymodels, outcome should be a factor  
-    is_fraud = factor(is_fraud),
-    
-    # first level is the event in tidymodels, so we need to reorder
-    is_fraud = relevel(is_fraud, ref = "1")
-         ) 
-
-glimpse(card_fraud)
+```
+## Rows: 671,028
+## Columns: 14
+## $ trans_date_trans_time <dttm> 2019-02-22 07:32:58, 2019-02-16 15:07:20, 2019-…
+## $ trans_year            <dbl> 2019, 2019, 2019, 2019, 2019, 2019, 2019, 2020, …
+## $ category              <chr> "entertainment", "kids_pets", "personal_care", "…
+## $ amt                   <dbl> 7.79, 3.89, 8.43, 40.00, 54.04, 95.61, 64.95, 3.…
+## $ city                  <chr> "Veedersburg", "Holloway", "Arnold", "Apison", "…
+## $ state                 <chr> "IN", "OH", "MO", "TN", "CO", "GA", "MN", "AL", …
+## $ lat                   <dbl> 40.1186, 40.0113, 38.4305, 35.0149, 39.4584, 32.…
+## $ long                  <dbl> -87.2602, -80.9701, -90.3870, -85.0164, -106.385…
+## $ city_pop              <dbl> 4049, 128, 35439, 3730, 277, 1841, 136, 190178, …
+## $ job                   <chr> "Development worker, community", "Child psychoth…
+## $ dob                   <date> 1959-10-19, 1946-04-03, 1985-03-31, 1991-01-28,…
+## $ merch_lat             <dbl> 39.41679, 39.74585, 37.73078, 34.53277, 39.95244…
+## $ merch_long            <dbl> -87.52619, -81.52477, -91.36875, -84.10676, -106…
+## $ is_fraud              <fct> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
 ```
 
 The data dictionary is as follows
@@ -90,7 +76,8 @@ The data dictionary is as follows
 
 We also add some of the variables we considered in our EDA for this dataset during homework 2.
 
-```{r}
+
+```r
 card_fraud <- card_fraud %>% 
   mutate( hour = hour(trans_date_trans_time),
           wday = wday(trans_date_trans_time, label = TRUE),
@@ -118,7 +105,6 @@ card_fraud <- card_fraud %>%
   )
 
 card_fraud$age <- floor(card_fraud$age)
-
 ```
 
 
@@ -142,7 +128,8 @@ Group all variables by type and examine each variable class by class. The datase
 
 Strings are usually not a useful format for classification problems. The strings should be converted to factors, dropped, or otherwise transformed.
 
-```{r}
+
+```r
 #Table that summarizes the number and frequency of fraudulent transactions
 fraud_cases_by_year <- card_fraud %>% 
   
@@ -155,7 +142,16 @@ fraud_cases_by_year <- card_fraud %>%
 
 fraud_cases_by_year
 ```
-```{r}
+
+```
+## # A tibble: 2 × 2
+##    year count_fraud_cases
+##   <dbl>             <int>
+## 1  2019              2721
+## 2  2020              1215
+```
+
+```r
 #Costs of fraud transaction
 
 # Summarise data
@@ -180,11 +176,20 @@ summary <- summary %>%
 
 # Print summary
 print(summary)
-
 ```
 
-```{r}
+```
+## # A tibble: 4 × 5
+##    year is_fraud total_amt yearly_total_amt fraud_percentage
+##   <dbl> <fct>        <dbl>            <dbl>            <dbl>
+## 1  2019 1         1423140.        33606041.             4.23
+## 2  2019 0        32182901.        33606041.             0   
+## 3  2020 1          651949.        13577863.             4.80
+## 4  2020 0        12925914.        13577863.             0
+```
 
+
+```r
 #histogram that shows the distribution of amounts charged to credit card, both for legitimate and fraudulent accounts.
 
 card_fraud %>% 
@@ -199,7 +204,17 @@ card_fraud %>%
   labs(x= "Amount charged", y= "# of amount charged") +
   ggtitle("Distribution of amounts charged to credit card") +
   facet_wrap((~is_fraud)) 
+```
 
+```
+## `summarise()` has grouped output by 'is_fraud'. You can override using the
+## `.groups` argument.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
+```r
 # Filter out fraudulent transactions
 fraudulent <- card_fraud %>%
   filter(is_fraud == 1)
@@ -221,13 +236,43 @@ legitimate_summary <- legitimate %>%
 
 # Print summary statistics
 print("Fraudulent Transaction Summary:")
-print(fraudulent_summary)
-
-print("Legitimate Transaction Summary:")
-print(legitimate_summary)
+```
 
 ```
-```{r}
+## [1] "Fraudulent Transaction Summary:"
+```
+
+```r
+print(fraudulent_summary)
+```
+
+```
+## # A tibble: 1 × 4
+##    Mean Median   Min   Max
+##   <dbl>  <dbl> <dbl> <dbl>
+## 1  527.   369.  1.06 1334.
+```
+
+```r
+print("Legitimate Transaction Summary:")
+```
+
+```
+## [1] "Legitimate Transaction Summary:"
+```
+
+```r
+print(legitimate_summary)
+```
+
+```
+## # A tibble: 1 × 4
+##    Mean Median   Min    Max
+##   <dbl>  <dbl> <dbl>  <dbl>
+## 1  67.6   47.2     1 27120.
+```
+
+```r
 #types of purchases that's likely to be fraudulent
 
 fraudulent <- card_fraud %>%
@@ -247,7 +292,10 @@ ggplot(fraud_by_category, aes(x = reorder(category, percent_of_total), y = perce
   theme_minimal() +
   labs(title = "Fraudulent Transactions by Category", x = "Category", y = "% of Total Fraudulent Transactions")
 ```
-```{r}
+
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
+```r
 #time of day that most fraud happens
 fraud_hour <- card_fraud %>% 
   filter(is_fraud == 1) %>% 
@@ -260,10 +308,11 @@ ggplot(fraud_hour, aes(x = hour, y = fraud_count)) +
   labs(x = "Hour of the Day", y = "Number of Fraudulent Transactions", 
        title = "Number of Fraudulent Transactions by Hour of the Day") +
   theme_minimal()
-
-
 ```
-```{r}
+
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+
+```r
 #age and fraud
 
 fraud_age <- card_fraud %>% 
@@ -277,7 +326,11 @@ ggplot(fraud_age, aes(x = age, y = fraud_count)) +
   labs(x = "Age", y = "Number of Fraudulent Transactions", 
        title = "Number of Fraudulent Transactions by age of victim") +
   theme_minimal()
+```
 
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+```r
 #city pop against age
 
 age_pop <- card_fraud %>% 
@@ -292,8 +345,9 @@ ggplot(age_pop, aes(x = age, y = city_pop, size = fraud_count)) +
   labs(x = "Age", y = "City Population", size = "Number of Fraudulent Transactions", 
        title = "Fraudulent transactions by Age and City Population") +
   theme_minimal()
-
 ```
+
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-9-2.png" width="672" />
 
 
 ***Strings to Factors*** 
@@ -310,29 +364,500 @@ We have plenty of geospatial data as lat/long pairs, so I want to convert city/s
 -   `city`, City of Credit Card Holder
 -   `state`, State of Credit Card Holder
 
-```{r}
+
+```r
 #Geospatial data
 #intuition: filter out all frauds
 #turn city locations into lat/long pairs
 #map locations of cities with fraud victims to map
 library(tidygeocoder)
 library(sf)
+```
+
+```
+## Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE
+```
+
+```r
 library(opencage) # for geocoding addresses
 library(usethis)
 library(hrbrthemes) # hrbrmstr/hrbrthemes
+```
+
+```
+## NOTE: Either Arial Narrow or Roboto Condensed fonts are required to use these themes.
+```
+
+```
+##       Please use hrbrthemes::import_roboto_condensed() to install Roboto Condensed and
+```
+
+```
+##       if Arial Narrow is not on your system, please see https://bit.ly/arialnarrow
+```
+
+```r
 library(kableExtra)
+```
+
+```
+## 
+## Attaching package: 'kableExtra'
+```
+
+```
+## The following object is masked from 'package:dplyr':
+## 
+##     group_rows
+```
+
+```r
 library(rnaturalearth)
+```
+
+```
+## The legacy packages maptools, rgdal, and rgeos, underpinning this package
+## will retire shortly. Please refer to R-spatial evolution reports on
+## https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+## This package is now running under evolution status 0
+```
+
+```
+## Support for Spatial objects (`sp`) will be deprecated in {rnaturalearth} and will be removed in a future release of the package. Please use `sf` objects with {rnaturalearth}. For example: `ne_download(returnclass = 'sf')`
+```
+
+```r
 library(tmap)
 
 map_fraud_latlong <- card_fraud %>% 
   filter(is_fraud == 1) %>% 
   mutate(state_geo = geo(state, method = "osm"))
+```
 
+```
+## Passing 51 addresses to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 51.5 seconds
+```
+
+```r
 map_fraud_plot <- map_fraud_latlong %>% 
   count(state, sort = TRUE) %>% 
   mutate(address_geo = purrr::map(state, geo, method = "osm")) %>% 
   unnest_wider(address_geo)
+```
 
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```
+## Passing 1 address to the Nominatim single address geocoder
+```
+
+```
+## Query completed in: 1 seconds
+```
+
+```r
 usa <- ne_countries(scale = "medium", returnclass = "sf") %>% 
   filter(name != "Antarctica") %>% 
   st_geometry(usa)
@@ -344,38 +869,73 @@ ggplot(data = usa) +
              size = 2,
              colour = "#001e62") +
   theme_void()
-  
-
 ```
+
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
 ##  Exploring factors: how is the compactness of categories?
 
 -   Do we have excessive number of categories? Do we want to combine some?
 
-```{r}
+
+```r
 card_fraud %>% 
   count(category, sort=TRUE)%>% 
   mutate(perc = n/sum(n))
+```
 
+```
+## # A tibble: 14 × 3
+##    category           n   perc
+##    <chr>          <int>  <dbl>
+##  1 gas_transport  68046 0.101 
+##  2 grocery_pos    63791 0.0951
+##  3 home           63597 0.0948
+##  4 shopping_pos   60416 0.0900
+##  5 kids_pets      58772 0.0876
+##  6 shopping_net   50743 0.0756
+##  7 entertainment  48521 0.0723
+##  8 food_dining    47527 0.0708
+##  9 personal_care  46843 0.0698
+## 10 health_fitness 44341 0.0661
+## 11 misc_pos       41244 0.0615
+## 12 misc_net       32829 0.0489
+## 13 grocery_net    23485 0.0350
+## 14 travel         20873 0.0311
+```
+
+```r
 card_fraud %>% 
   count(job, sort=TRUE) %>% 
   mutate(perc = n/sum(n))
+```
 
-
+```
+## # A tibble: 494 × 3
+##    job                            n    perc
+##    <chr>                      <int>   <dbl>
+##  1 Film/video editor           5106 0.00761
+##  2 Exhibition designer         4728 0.00705
+##  3 Naval architect             4546 0.00677
+##  4 Surveyor, land/geomatics    4448 0.00663
+##  5 Materials engineer          4292 0.00640
+##  6 Designer, ceramics/pottery  4262 0.00635
+##  7 IT trainer                  4014 0.00598
+##  8 Financial adviser           3959 0.00590
+##  9 Systems developer           3948 0.00588
+## 10 Environmental consultant    3831 0.00571
+## # ℹ 484 more rows
 ```
 
 
 The predictors `category` and `job` are transformed into factors.
 
-```{r}
-#| label: convert-strings-to-factors
 
-
+```r
 card_fraud <- card_fraud %>% 
   mutate(category = factor(category),
          job = factor(job)) 
-
 ```
 
 `category` has 14 unique values, and `job` has 494 unique values. The dataset is quite large, with over 670K records, so these variables don't have an excessive number of levels at first glance. However, it is worth seeing if we can compact the levels to a smaller number.
@@ -395,11 +955,10 @@ Consider each variable and decide whether to keep, transform, or drop it. This i
 
 You have a number of variables and you have to decide which ones to use in your model. For instance, you have the latitude/lognitude of the customer, that of the merchant, the same data in radians, as well as the `distance_km` and `distance_miles`. Do you need them all? 
 
-```{r}
 
+```r
  card_fraud_features <- card_fraud %>% 
   select(category, amt, is_fraud, hour, age_group, distance_km)
-
 ```
 
 we started with 6 variables: category, amount, is_fraud, hour, age, and distance. 
@@ -417,7 +976,8 @@ You will be running a series of different models, along the lines of the Califor
 Thus, we will work with a smaller sample of 10% of the values the original dataset to identify the best model, and once we have the best model we can use the full dataset to train- test our best model.
 
 
-```{r}
+
+```r
 # select a smaller subset
 my_card_fraud <- card_fraud_features %>% 
   # select a smaller subset, 10% of the entire dataframe 
@@ -427,7 +987,8 @@ my_card_fraud <- card_fraud_features %>%
 
 ## Split the data in training - testing
 
-```{r}
+
+```r
 # **Split the data**
 
 set.seed(123)
@@ -445,7 +1006,8 @@ card_fraud_test <- testing(data_split)
 
 Start with 3 CV folds to quickly get an estimate for the best model and you can increase the number of folds to 5 or 10 later.
 
-```{r}
+
+```r
 set.seed(123)
 cv_folds <- vfold_cv(data = card_fraud_train, 
                           v = 3, 
@@ -453,32 +1015,64 @@ cv_folds <- vfold_cv(data = card_fraud_train,
 cv_folds 
 ```
 
+```
+## #  3-fold cross-validation using stratification 
+## # A tibble: 3 × 2
+##   splits                id   
+##   <list>                <chr>
+## 1 <split [35787/17894]> Fold1
+## 2 <split [35787/17894]> Fold2
+## 3 <split [35788/17893]> Fold3
+```
+
 
 ## Define a tidymodels `recipe`
 
 What steps are you going to add to your recipe? Do you need to do any log transformations?
 
-```{r, define_recipe}
 
+```r
 fraud_rec <- recipe(is_fraud ~ ., data = card_fraud_train) %>%
   step_log(amt) %>%
   step_novel(all_nominal(), -all_outcomes()) %>%
   step_dummy(all_nominal(), -all_outcomes()) %>% 
   step_zv(all_numeric(), -all_outcomes())  %>% 
   step_normalize(all_numeric()) 
-
 ```
 
 Once you have your recipe, you can check the pre-processed dataframe 
 
-```{r}
+
+```r
 prepped_data <- 
   fraud_rec %>% # use the recipe object
   prep() %>% # perform the recipe on training data
   juice() # extract only the preprocessed dataframe 
 
 glimpse(prepped_data)
+```
 
+```
+## Rows: 53,681
+## Columns: 18
+## $ amt                     <dbl> 0.3817751, -0.1678079, 0.5180406, -0.5699504, …
+## $ hour                    <dbl> -1.43901946, 0.32468057, -0.55716945, 0.471655…
+## $ age_group               <dbl> -0.19156366, -0.76635635, -1.34114904, 0.67062…
+## $ distance_km             <dbl> -0.2115124, -0.1644061, 0.5032902, 1.1915351, …
+## $ is_fraud                <fct> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ category_food_dining    <dbl> -0.2742835, -0.2742835, -0.2742835, -0.2742835…
+## $ category_gas_transport  <dbl> -0.3339818, -0.3339818, -0.3339818, -0.3339818…
+## $ category_grocery_net    <dbl> -0.1923869, -0.1923869, -0.1923869, -0.1923869…
+## $ category_grocery_pos    <dbl> 3.0536996, -0.3274655, 3.0536996, -0.3274655, …
+## $ category_health_fitness <dbl> -0.2661877, 3.7566782, -0.2661877, -0.2661877,…
+## $ category_home           <dbl> -0.3232293, -0.3232293, -0.3232293, 3.0937210,…
+## $ category_kids_pets      <dbl> -0.3085708, -0.3085708, -0.3085708, -0.3085708…
+## $ category_misc_net       <dbl> -0.2279682, -0.2279682, -0.2279682, -0.2279682…
+## $ category_misc_pos       <dbl> -0.255557, -0.255557, -0.255557, -0.255557, -0…
+## $ category_personal_care  <dbl> -0.2694632, -0.2694632, -0.2694632, -0.2694632…
+## $ category_shopping_net   <dbl> -0.2875232, -0.2875232, -0.2875232, -0.2875232…
+## $ category_shopping_pos   <dbl> -0.3155083, -0.3155083, -0.3155083, -0.3155083…
+## $ category_travel         <dbl> -0.1801262, -0.1801262, -0.1801262, -0.1801262…
 ```
 
 
@@ -492,7 +1086,8 @@ You should define the following classification models:
 4. A boosted tree using Extreme Gradient Boosting, and the `xgboost` engine
 5. A k-nearest neighbours,  using 4 nearest_neighbors and the `kknn` engine  
 
-```{r, define_models}
+
+```r
 ## Model Building 
 
 # 1. Pick a `model type`
@@ -506,14 +1101,30 @@ log_spec <-  logistic_reg() %>%  # model type
 
 # Show your model specification
 log_spec
+```
 
+```
+## Logistic Regression Model Specification (classification)
+## 
+## Computational engine: glm
+```
+
+```r
 # Decision Tree
 tree_spec <- decision_tree() %>%
   set_engine(engine = "C5.0") %>%
   set_mode("classification")
 
 tree_spec
+```
 
+```
+## Decision Tree Model Specification (classification)
+## 
+## Computational engine: C5.0
+```
+
+```r
 # Random Forest
 library(ranger)
 
@@ -525,7 +1136,20 @@ rf_spec <-
 
 # Boosted tree (XGBoost)
 library(xgboost)
+```
 
+```
+## 
+## Attaching package: 'xgboost'
+```
+
+```
+## The following object is masked from 'package:dplyr':
+## 
+##     slice
+```
+
+```r
 xgb_spec <- 
   boost_tree() %>% 
   set_engine("xgboost") %>% 
@@ -540,9 +1164,8 @@ knn_spec <-
 
 ## Bundle recipe and model with `workflows`
 
-```{r, define_workflows}
 
-
+```r
 ## Bundle recipe and model with `workflows`
 
 
@@ -570,7 +1193,6 @@ knn_wflow <-
  workflow() %>%
  add_recipe(fraud_rec) %>% 
  add_model(knn_spec)
-
 ```
 
 
@@ -578,7 +1200,8 @@ knn_wflow <-
 
 You may want to compare the time it takes to fit each model. `tic()` starts a simple timer and `toc()` stops it
 
-```{r, fit_models}
+
+```r
 tic()
 log_res <- log_wflow %>% 
   fit_resamples(
@@ -588,6 +1211,13 @@ log_res <- log_wflow %>%
       kap, roc_auc, sens, spec),
     control = control_resamples(save_pred = TRUE)) 
 time <- toc()
+```
+
+```
+## 1.299 sec elapsed
+```
+
+```r
 log_time <- time[[4]]
 
 tic()
@@ -599,6 +1229,13 @@ tree_res <- tree_wflow %>%
       kap, roc_auc, sens, spec),
     control = control_resamples(save_pred = TRUE)) 
 time <- toc()
+```
+
+```
+## 5.655 sec elapsed
+```
+
+```r
 tree_time <- time[[4]]
 
 tic()
@@ -610,6 +1247,13 @@ rf_res <- rf_wflow %>%
       kap, roc_auc, sens, spec),
     control = control_resamples(save_pred = TRUE)) 
 time <- toc()
+```
+
+```
+## 14.804 sec elapsed
+```
+
+```r
 rf_time <- time[[4]]
 
 tic()
@@ -621,6 +1265,13 @@ xgb_res <- xgb_wflow %>%
       kap, roc_auc, sens, spec),
     control = control_resamples(save_pred = TRUE)) 
 time <- toc()
+```
+
+```
+## 1.528 sec elapsed
+```
+
+```r
 xgb_time <- time[[4]]
 
 tic()
@@ -632,14 +1283,20 @@ knn_res <- knn_wflow %>%
       kap, roc_auc, sens, spec),
     control = control_resamples(save_pred = TRUE)) 
 time <- toc()
+```
+
+```
+## 94.477 sec elapsed
+```
+
+```r
 knn_time <- time[[4]]
-
-
 ```
 
 ## Compare models
 
-```{r, compare_models}
+
+```r
 ## Model Comparison
 
 log_metrics <- 
@@ -685,8 +1342,6 @@ model_compare <- bind_rows(log_metrics,
   mutate(time = str_sub(time, end = -13) %>% 
            as.double()
          )
-
-
 ```
 
 ## Which metric to use
@@ -694,8 +1349,8 @@ model_compare <- bind_rows(log_metrics,
 This is a highly imbalanced data set, as roughly 99.5% of all transactions are ok, and it's only 0.5% of transactions that are fraudulent. A `naive` model, which classifies everything as ok and not-fraud, would have an accuracy of 99.5%, but what about the sensitivity, specificity, the AUC, etc?
 
 ## `last_fit()`
-```{r}
 
+```r
 ## `last_fit()` on test set
 
 # - `last_fit()`  fits a model to the whole training data and evaluates it on the test set. 
@@ -710,7 +1365,6 @@ last_fit_xgb <- last_fit(xgb_wflow,
                         metrics = metric_set(
                           accuracy, f_meas, kap, precision,
                           recall, roc_auc, sens, spec))
-
 ```
 
 
@@ -718,28 +1372,41 @@ last_fit_xgb <- last_fit(xgb_wflow,
 ## Get variable importance using `vip` package
 
 
-```{r}
 
+```r
 last_fit_xgb %>% 
   pluck(".workflow", 1) %>%   
   pull_workflow_fit() %>% 
   vip(num_features = 10) +
   theme_light()
+```
 
 ```
+## Warning: `pull_workflow_fit()` was deprecated in workflows 0.2.3.
+## ℹ Please use `extract_fit_parsnip()` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
+
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 ## Plot Final Confusion matrix and ROC curve
 
 
-```{r}
+
+```r
 ## Final Confusion Matrix
 
 last_fit_xgb %>%
   collect_predictions() %>% 
   conf_mat(is_fraud, .pred_class) %>% 
   autoplot(type = "heatmap")
+```
 
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
+```r
 ## Final ROC curve
 last_fit_xgb %>% 
   collect_predictions() %>% 
@@ -747,15 +1414,16 @@ last_fit_xgb %>%
   autoplot()
 ```
 
+<img src="/projects/fraud_1_files/figure-html/unnamed-chunk-20-2.png" width="672" />
+
 
 ##  Calculating the cost of fraud to the company
 
 
 - How much money (in US\$ terms) are fraudulent transactions costing the company? Generate a table that summarizes the total amount of legitimate and fraudulent transactions per year and calculate the % of fraudulent transactions, in US\$ terms. Compare your model vs the naive classification that we do not have any fraudulent transactions. 
 
-```{r}
-#| label: savings-for-cc-company
 
+```r
 # Define the best model
 
 best_model_wflow <- xgb_wflow
@@ -770,7 +1438,16 @@ best_model_preds <-
 
 best_model_preds %>% 
   conf_mat(truth = is_fraud, estimate = .pred_class)
+```
 
+```
+##           Truth
+## Prediction      1      0
+##          1   2679    183
+##          0   1257 666909
+```
+
+```r
 cost <- best_model_preds %>%
   select(is_fraud, amt, pred = .pred_class) 
 
@@ -809,14 +1486,21 @@ cost_summary <- cost %>%
          perc_cost_classifier = (false_positive_cost + false_negative_cost + true_positive_cost + true_negative_cost)/amt)
 
 cost_summary
+```
 
-
+```
+## # A tibble: 1 × 8
+##   false_naive_cost false_negative_cost false_positive_cost true_positive_cost
+##              <dbl>               <dbl>               <dbl>              <dbl>
+## 1         2075089.             429923.               3080.                  0
+## # ℹ 4 more variables: true_negative_cost <dbl>, amt <dbl>,
+## #   perc_cost_naive <dbl>, perc_cost_classifier <dbl>
 ```
 
 
-- If we use a naive classifier thinking that all transactions are legitimate and not fraudulent, the cost to the company is `r scales::dollar(cost_summary$false_naive_cost)`.
-- With our best model, the total cost of false negatives, namely transactions our classifier thinks are legitimate but which turned out to be fraud, is `r scales::dollar(cost_summary$false_negative_cost)`.
+- If we use a naive classifier thinking that all transactions are legitimate and not fraudulent, the cost to the company is $2,075,089.
+- With our best model, the total cost of false negatives, namely transactions our classifier thinks are legitimate but which turned out to be fraud, is $429,923.
 
-- Our classifier also has some false positives, `r scales::dollar(cost_summary$false_positive_cost)`, namely flagging transactions as fraudulent, but which were legitimate. Assuming the card company makes around 2% for each transaction (source: https://startups.co.uk/payment-processing/credit-card-processing-fees/), the amount of money lost due to these false positives is `r scales::dollar(cost_summary$false_positive_cost * 0.02)`
+- Our classifier also has some false positives, $3,079.96, namely flagging transactions as fraudulent, but which were legitimate. Assuming the card company makes around 2% for each transaction (source: https://startups.co.uk/payment-processing/credit-card-processing-fees/), the amount of money lost due to these false positives is $61.60
 
-- The \$ improvement over the naive policy is `r scales::dollar(cost_summary$false_naive_cost - cost_summary$false_negative_cost - cost_summary$false_positive_cost * 0.02)`.
+- The \$ improvement over the naive policy is $1,645,105.

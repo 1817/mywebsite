@@ -5,7 +5,7 @@ categories:
 date: "2023-06-14"
 description: Machine Learning using Credit Card Fraud Data and R # the title that will show up once someone gets to this page
 draft: false
-image: fraud.png # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+image: fraud.png # save picture in \static\img\blogs. (if not try /themes/forty/static/img/) Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
 
 keywords: ""
 slug: fraud_1 # slug is the shorthand URL address... no spaces plz

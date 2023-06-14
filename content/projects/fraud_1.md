@@ -5,7 +5,7 @@ categories:
 date: "2023-06-14"
 description: Machine Learning using Credit Card Fraud Data and R # the title that will show up once someone gets to this page
 draft: false
-image: fraud.png # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+image: fraud.png # save picture in \static\img\blogs. (if not try /themes/forty/static/img/) Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
 
 keywords: ""
 slug: fraud_1 # slug is the shorthand URL address... no spaces plz
@@ -1055,24 +1055,24 @@ glimpse(prepped_data)
 ```
 ## Rows: 53,681
 ## Columns: 18
-## $ amt                     <dbl> 0.3817751, -0.1678079, 0.5180406, -0.5699504, …
-## $ hour                    <dbl> -1.43901946, 0.32468057, -0.55716945, 0.471655…
-## $ age_group               <dbl> -0.19156366, -0.76635635, -1.34114904, 0.67062…
-## $ distance_km             <dbl> -0.2115124, -0.1644061, 0.5032902, 1.1915351, …
+## $ amt                     <dbl> 1.443776426, -1.054522973, -1.345072318, 0.528…
+## $ hour                    <dbl> -0.5598734, -0.4128714, 0.0281347, 0.0281347, …
+## $ age_group               <dbl> -0.19147327, 1.24938081, -1.34415653, 0.673039…
+## $ distance_km             <dbl> 0.852083569, 1.691697464, -1.052310404, 0.3329…
 ## $ is_fraud                <fct> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ category_food_dining    <dbl> -0.2742835, -0.2742835, -0.2742835, -0.2742835…
-## $ category_gas_transport  <dbl> -0.3339818, -0.3339818, -0.3339818, -0.3339818…
-## $ category_grocery_net    <dbl> -0.1923869, -0.1923869, -0.1923869, -0.1923869…
-## $ category_grocery_pos    <dbl> 3.0536996, -0.3274655, 3.0536996, -0.3274655, …
-## $ category_health_fitness <dbl> -0.2661877, 3.7566782, -0.2661877, -0.2661877,…
-## $ category_home           <dbl> -0.3232293, -0.3232293, -0.3232293, 3.0937210,…
-## $ category_kids_pets      <dbl> -0.3085708, -0.3085708, -0.3085708, -0.3085708…
-## $ category_misc_net       <dbl> -0.2279682, -0.2279682, -0.2279682, -0.2279682…
-## $ category_misc_pos       <dbl> -0.255557, -0.255557, -0.255557, -0.255557, -0…
-## $ category_personal_care  <dbl> -0.2694632, -0.2694632, -0.2694632, -0.2694632…
-## $ category_shopping_net   <dbl> -0.2875232, -0.2875232, -0.2875232, -0.2875232…
-## $ category_shopping_pos   <dbl> -0.3155083, -0.3155083, -0.3155083, -0.3155083…
-## $ category_travel         <dbl> -0.1801262, -0.1801262, -0.1801262, -0.1801262…
+## $ category_food_dining    <dbl> -0.2760071, -0.2760071, -0.2760071, -0.2760071…
+## $ category_gas_transport  <dbl> -0.335324, -0.335324, -0.335324, -0.335324, -0…
+## $ category_grocery_net    <dbl> -0.1902946, -0.1902946, -0.1902946, -0.1902946…
+## $ category_grocery_pos    <dbl> 3.0870112, -0.3239319, -0.3239319, -0.3239319,…
+## $ category_health_fitness <dbl> -0.2660271, -0.2660271, -0.2660271, -0.2660271…
+## $ category_home           <dbl> -0.3249489, -0.3249489, -0.3249489, -0.3249489…
+## $ category_kids_pets      <dbl> -0.3080998, -0.3080998, -0.3080998, -0.3080998…
+## $ category_misc_net       <dbl> -0.2282845, -0.2282845, 4.3804177, -0.2282845,…
+## $ category_misc_pos       <dbl> -0.2548945, -0.2548945, -0.2548945, -0.2548945…
+## $ category_personal_care  <dbl> -0.2742835, -0.2742835, -0.2742835, -0.2742835…
+## $ category_shopping_net   <dbl> -0.2860396, -0.2860396, -0.2860396, -0.2860396…
+## $ category_shopping_pos   <dbl> -0.3147939, 3.1766221, -0.3147939, -0.3147939,…
+## $ category_travel         <dbl> -0.1787991, -0.1787991, -0.1787991, -0.1787991…
 ```
 
 
@@ -1214,7 +1214,7 @@ time <- toc()
 ```
 
 ```
-## 1.299 sec elapsed
+## 1.32 sec elapsed
 ```
 
 ```r
@@ -1232,7 +1232,7 @@ time <- toc()
 ```
 
 ```
-## 5.655 sec elapsed
+## 5.856 sec elapsed
 ```
 
 ```r
@@ -1250,7 +1250,7 @@ time <- toc()
 ```
 
 ```
-## 14.804 sec elapsed
+## 14.9 sec elapsed
 ```
 
 ```r
@@ -1268,7 +1268,7 @@ time <- toc()
 ```
 
 ```
-## 1.528 sec elapsed
+## 1.323 sec elapsed
 ```
 
 ```r
@@ -1286,7 +1286,7 @@ time <- toc()
 ```
 
 ```
-## 94.477 sec elapsed
+## 90.273 sec elapsed
 ```
 
 ```r
@@ -1443,8 +1443,8 @@ best_model_preds %>%
 ```
 ##           Truth
 ## Prediction      1      0
-##          1   2679    183
-##          0   1257 666909
+##          1   2630    185
+##          0   1306 666907
 ```
 
 ```r
@@ -1492,15 +1492,15 @@ cost_summary
 ## # A tibble: 1 × 8
 ##   false_naive_cost false_negative_cost false_positive_cost true_positive_cost
 ##              <dbl>               <dbl>               <dbl>              <dbl>
-## 1         2075089.             429923.               3080.                  0
+## 1         2075089.             419093.               2925.                  0
 ## # ℹ 4 more variables: true_negative_cost <dbl>, amt <dbl>,
 ## #   perc_cost_naive <dbl>, perc_cost_classifier <dbl>
 ```
 
 
 - If we use a naive classifier thinking that all transactions are legitimate and not fraudulent, the cost to the company is $2,075,089.
-- With our best model, the total cost of false negatives, namely transactions our classifier thinks are legitimate but which turned out to be fraud, is $429,923.
+- With our best model, the total cost of false negatives, namely transactions our classifier thinks are legitimate but which turned out to be fraud, is $419,093.
 
-- Our classifier also has some false positives, $3,079.96, namely flagging transactions as fraudulent, but which were legitimate. Assuming the card company makes around 2% for each transaction (source: https://startups.co.uk/payment-processing/credit-card-processing-fees/), the amount of money lost due to these false positives is $61.60
+- Our classifier also has some false positives, $2,924.70, namely flagging transactions as fraudulent, but which were legitimate. Assuming the card company makes around 2% for each transaction (source: https://startups.co.uk/payment-processing/credit-card-processing-fees/), the amount of money lost due to these false positives is $58.49
 
-- The \$ improvement over the naive policy is $1,645,105.
+- The \$ improvement over the naive policy is $1,655,938.

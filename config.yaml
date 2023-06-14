@@ -81,7 +81,7 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: pic01.jpg
+      - image: pic01.jpg #cover image, stored in /themes/forty/static/img/
         subtitle: My first project
         title: ML with IMDB Data
         url: projects/ml_imdb_1

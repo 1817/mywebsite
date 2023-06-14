@@ -82,29 +82,29 @@ params:
     enable: yes
     showcase:
       - image: pic01.jpg
-        subtitle: This is to showcase my first project
+        subtitle: My first project
         title: ML with IMDB Data
         url: projects/ml_imdb_1
       - image: pic02.jpg
-        subtitle: This is project 2
-        title: Project 2
-        url: blogs/project_2
-      - image: pic03.jpg
-        subtitle: This is project 3
-        title: Project 3
-        url: blogs/project_3
-      - image: pic04.jpg
-        subtitle: This is project 4
-        title: Project 4
-        url: blogs/project_4
-      - image: pic05.jpg
-        subtitle: This is project 5
-        title: Project 5
-        url: blogs/project_5
-      - image: pic06.jpg
-        subtitle: This is Project 6
-        title: Project 6
-        url: blogs/project_6
+        subtitle: My second project
+        title: Finding best Model for Credit Card Fraud Data
+        url: projects/fraud_1
+    #  - image: pic03.jpg
+     #   subtitle: This is project 3
+      #  title: Project 3
+       # url: blogs/project_3
+    #  - image: pic04.jpg
+     #   subtitle: This is project 4
+      #  title: Project 4
+       # url: blogs/project_4
+    #  - image: pic05.jpg
+     #   subtitle: This is project 5
+      #  title: Project 5
+       # url: blogs/project_5
+    #  - image: pic06.jpg
+     #   subtitle: This is Project 6
+      #  title: Project 6
+       # url: blogs/project_6
   two:
     buttonText: Time to Rock n Roll
     enable: yes

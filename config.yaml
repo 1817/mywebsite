@@ -85,7 +85,7 @@ params:
         subtitle: My first project
         title: ML with IMDB Data
         url: projects/ml_imdb_1
-      - image: pic02.jpg
+      - image: pic07.jpg
         subtitle: My second project
         title: Finding best Model for Credit Card Fraud Data
         url: projects/fraud_1

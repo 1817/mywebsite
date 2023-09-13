@@ -71,3 +71,5 @@ For Linux and MacOS, that ending is “LF” For Windows, that ending is “CRLF
 To solve this OS incompatibility, open up the shell/terminal and enter
 macOS git config --global core.autocrlf input
 Windows git config --global core.autocrlf true]
+
+(latest token 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)

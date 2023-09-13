@@ -89,10 +89,10 @@ params:
         subtitle: My second project
         title: Finding best Model for Credit Card Fraud Data
         url: projects/fraud_1
-    #  - image: pic03.jpg
-     #   subtitle: This is project 3
-      #  title: Project 3
-       # url: blogs/project_3
+      - image: macro_cpi.jpg
+        subtitle: Project 3
+        title: Macrohistory Data Wrangling (CPI)
+        url: projects/macro_cpi
     #  - image: pic04.jpg
      #   subtitle: This is project 4
       #  title: Project 4

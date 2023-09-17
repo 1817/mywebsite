@@ -1,19 +1,22 @@
 ---
-categories:  
-- ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
-- ""
+title: "Macrohistory"
+author: "qi ren"
 date: "2023-09-13"
-description: Macrohistory Data Wrangling (CPI) # the title that will show up once someone gets to this page
-draft: false
-image: macro_cpi.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
-
-keywords: ""
-slug: macro_cpi # slug is the shorthand URL address... no spaces plz
-title: Macrohistory Data Wrangling 1
+output:
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
 ---
 
 
-![](../../../../../../../../../../../../img/macro_cpi.jpg)<!-- -->
 
 
 
@@ -104,14 +107,14 @@ Four countries and their CPI data over the years (Germany, Portugal, USA, and Sw
 # Filter the dataframe
 four_countries <- country_data %>% 
   filter(
-  country == c("Germany", "Portugal", "USA", "Switzerland")
+  country == c("Australia", "UK", "Norway", "Spain")
 )
 ```
 
 ```
 ## Warning: There was 1 warning in `filter()`.
-## ℹ In argument: `country == c("Germany", "Portugal", "USA", "Switzerland")`.
-## Caused by warning in `country == c("Germany", "Portugal", "USA", "Switzerland")`:
+## ℹ In argument: `country == c("Australia", "UK", "Norway", "Spain")`.
+## Caused by warning in `country == c("Australia", "UK", "Norway", "Spain")`:
 ## ! longer object length is not a multiple of shorter object length
 ```
 
@@ -132,21 +135,21 @@ four_countries %>%
 ```
 
 ```
-## # A tibble: 151 × 3
+## # A tibble: 152 × 3
 ## # Groups:   country [4]
-##    country      year   cpi
-##    <chr>       <dbl> <dbl>
-##  1 Switzerland  1872 17.0 
-##  2 Switzerland  1876 15.4 
-##  3 Switzerland  1880 13.2 
-##  4 Switzerland  1884 10.8 
-##  5 Switzerland  1888  9.30
-##  6 Switzerland  1892 10.6 
-##  7 Switzerland  1896  9.92
-##  8 Switzerland  1900  9.76
-##  9 Switzerland  1904 10.1 
-## 10 Switzerland  1908 11.2 
-## # ℹ 141 more rows
+##    country    year   cpi
+##    <chr>     <dbl> <dbl>
+##  1 Australia  1870  2.71
+##  2 Australia  1874  2.67
+##  3 Australia  1878  2.83
+##  4 Australia  1882  2.67
+##  5 Australia  1886  3   
+##  6 Australia  1890  2.79
+##  7 Australia  1894  2.46
+##  8 Australia  1898  2.25
+##  9 Australia  1902  2.62
+## 10 Australia  1906  2.58
+## # ℹ 142 more rows
 ```
 
 ## Plotting the graph

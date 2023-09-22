@@ -156,4 +156,14 @@ four_countries %>%
 
 This is to plot the graph of the data, with y-axis as the CPI data, x-axis as years, and Countries were colour coded.
 
-<img src="/projects/macro_cpi_files/figure-html/pressure-1.png" width="672" />
+
+```r
+ggplot(four_countries, aes(x = year, y = cpi, color = country, group = country)) +
+  geom_line() +
+  #geom_point() +  # Adding points can help visualize individual data points
+  scale_color_manual(values = c("Australia" = "orange", "Norway" = "red", "Spain" = "purple", "UK" = "blue" )) +  # Speicify colours manually
+  labs(title = "CPI Over Years by Country", x = "Year", y = "CPI") +
+  theme_minimal()
+```
+
+<img src="/projects/macro_cpi_files/figure-html/unnamed-chunk-3-1.png" width="672" />

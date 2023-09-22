@@ -67,7 +67,7 @@ four_countries %>%
 
 This is to plot the graph of the data, with y-axis as the CPI data, x-axis as years, and Countries were colour coded.
 
-```{r pressure, echo=FALSE}
+```{r}
 
 ggplot(four_countries, aes(x = year, y = cpi, color = country, group = country)) +
   geom_line() +
